@@ -6,7 +6,6 @@ map:
     1 represents the place is blocked by obstacles, 0 represents free space.
 
 '''
-import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -19,7 +18,6 @@ class CarMap:
         '''
         self.size = size
         self.map = np.zeros((size, size), dtype=np.uint8)
-        print(self.map.dtype)
         self.visualize = visualize
         self.all_maps = None
 
@@ -46,6 +44,35 @@ class CarMap:
             if not prev_point is None:
                 self.__connect(prev_point, curr_point)
             prev_point = curr_point
+
+    def extendMap(self, width=2) -> None:
+        '''
+        Extend the map with given length. The extend process with repeat (width-1) times.
+        '''
+        if width <= 1:
+            return
+        for _ in range(width-1):
+            for i in range(self.size):
+                for j in range(self.size):
+                    if self.map[i][j] == 1:
+                        if i > 0:
+                            self.map[i-1][j] = 2 if self.map[i-1][j] == 0 else self.map[i-1][j]
+                        if i < self.size - 1:
+                            self.map[i+1][j] = 2 if self.map[i+1][j] == 0 else self.map[i+1][j]
+                        if j > 0:
+                            self.map[i][j-1] = 2 if self.map[i][j-1] == 0 else self.map[i][j-1]
+                        if j < self.size - 1:
+                            self.map[i][j+1] = 2 if self.map[i][j+1] == 0 else self.map[i][j+1]
+            for i in range(self.size):
+                for j in range(self.size):
+                    if self.map[i][j] == 2:
+                        self.map[i][j] = 1
+
+    def getMap(self):
+        return self.map
+
+    def getSource(self):
+        return (self.size//2, 0)
 
     def printMap(self) -> None:
         '''
