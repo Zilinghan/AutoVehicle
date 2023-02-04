@@ -85,7 +85,7 @@ class MinTurns(AStar):
         prev_pos = curr_pos
 
         if route.get(self.end_pos) is None:
-            return 'No path found.', []
+            return None
 
         while route[curr_pos] is not None:
             curr_pos = route[curr_pos][1]
@@ -194,6 +194,8 @@ class Navigator:
             else:
                 return [('R', 0)]
         self.path = MinTurns(self.source, self.destination, self.map).search()
+        if self.path is None:
+            return None
         route = []
         for i in range(0, len(self.path) - 1):
             curr_point = self.path[i]
@@ -211,6 +213,9 @@ class Navigator:
         return route
 
     def plotRoute(self):
+        print(self.path)
+        if self.path is None:
+            return None
         for i in range(len(self.path)-1):
             curr_point = self.path[i]
             next_point = self.path[i+1]
