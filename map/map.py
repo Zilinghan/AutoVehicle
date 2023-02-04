@@ -78,21 +78,10 @@ class CarMap:
         '''
         Visualize the map.
         '''
+        self.map[self.size//2][0] = 2
         plt.imshow(self.map)
         plt.show()
-
-
-    def getVideo(self, output='output.mp4', fps=1) -> None:
-        '''
-        TODO:
-        Visualize a list of maps as a video.
-        '''
-        # if self.all_maps is not None:
-        #     out = cv2.VideoWriter(output, cv2.VideoWriter_fourcc(*'mp4v'), fps, (self.size, self.size), False)
-        #     for i in range(len(self.all_maps)):
-        #         out.write(self.all_maps[i]*255)
-        #     out.release()
-        pass
+        self.map[self.size//2][0] = 0
 
     def __connect(self, point1, point2) -> None:
         '''
